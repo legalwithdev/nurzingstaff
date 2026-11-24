@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nurzing | NurzingStaff Portal</title>
+  <style>
+    :root {
+      --bg: #050811; --surface: rgba(13, 20, 36, 0.88); --surface-2: rgba(24, 35, 58, 0.76);
+      --border: rgba(148, 163, 184, 0.18); --text: #f8fafc; --muted: #94a3b8;
+      --primary: #0ea5e9; --primary-2: #38bdf8; --accent: #10b981; --accent-2: #34d399;
+      --warn: #fbbf24; --danger: #f87171; --radius: 18px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at 12% 8%, rgba(14, 165, 233, 0.16), transparent 42%), radial-gradient(circle at 88% 18%, rgba(16, 185, 129, 0.12), transparent 42%), var(--bg);
+      color: var(--text); line-height: 1.58; padding: 16px 14px 72px; -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 780px; margin: 0 auto; }
+    header.nurzing-hero-bar {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.94), rgba(10, 17, 32, 0.92));
+      backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px; margin-bottom: 14px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+    .brand-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+    .brand-mark { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1rem; }
+    .brand-dot { width: 11px; height: 11px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-2), var(--accent-2)); box-shadow: 0 0 12px rgba(56, 189, 248, 0.7); }
+    .badges { display: flex; flex-wrap: wrap; gap: 8px; }
+    .badge { font-size: 11.5px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: rgba(56, 189, 248, 0.13); color: var(--primary-2); border: 1px solid rgba(56, 189, 248, 0.28); }
+    .badge.green { background: rgba(52, 211, 153, 0.13); color: var(--accent-2); border-color: rgba(52, 211, 153, 0.28); }
+    h1 { font-size: 1.42rem; letter-spacing: -0.02em; margin-bottom: 6px; }
+    .sub { color: var(--muted); font-size: 0.9rem; }
+    .nav { display: flex; gap: 8px; overflow-x: auto; padding: 6px 2px 14px; scrollbar-width: none; }
+    .nav::-webkit-scrollbar { display: none; }
+    .nav a { flex: 0 0 auto; text-decoration: none; color: var(--text); background: var(--surface-2); border: 1px solid var(--border); padding: 8px 14px; border-radius: 999px; font-size: 0.84rem; font-weight: 500; }
+    .nav a:hover { border-color: var(--primary-2); color: var(--primary-2); }
+    section.card { background: var(--surface); backdrop-filter: blur(14px); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-bottom: 16px; }
+    section.card h2 { font-size: 1.1rem; margin-bottom: 6px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .tag { font-size: 0.72rem; background: rgba(56, 189, 248, 0.15); color: var(--primary-2); border: 1px solid rgba(56, 189, 248, 0.28); padding: 2px 8px; border-radius: 6px; font-weight: 700; }
+    .desc { color: var(--muted); font-size: 0.87rem; margin-bottom: 14px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 620px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+    label.field { display: flex; flex-direction: column; gap: 5px; font-size: 0.84rem; color: #cbd5e1; }
+    input, select, textarea { width: 100%; background: rgba(7, 12, 24, 0.92); color: var(--text); border: 1px solid var(--border); border-radius: 11px; padding: 10px 12px; font-size: 0.92rem; outline: none; }
+    input:focus, select:focus, textarea:focus { border-color: var(--primary-2); }
+    textarea { min-height: 78px; resize: vertical; }
+    .rules-box { background: rgba(7, 12, 24, 0.88); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin: 14px 0; font-size: 0.84rem; color: #cbd5e1; }
+    .rules-box ul { padding-left: 18px; display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
+    .check-item { display: flex; align-items: flex-start; gap: 10px; background: var(--surface-2); border: 1px solid var(--border); padding: 10px 12px; border-radius: 11px; font-size: 0.86rem; margin-bottom: 8px; cursor: pointer; }
+    .check-item input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; flex: 0 0 auto; accent-color: var(--accent-2); }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    button { background: linear-gradient(135deg, var(--primary), #0284c7); color: #fff; border: none; border-radius: 11px; padding: 10px 16px; font-size: 0.88rem; font-weight: 600; cursor: pointer; }
+    button.green { background: linear-gradient(135deg, var(--accent), #059669); }
+    button.secondary { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); }
+    button.danger { background: rgba(248, 113, 113, 0.16); color: #fecaca; border: 1px solid rgba(248, 113, 113, 0.35); }
+    .status-card { background: rgba(7, 12, 24, 0.92); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 14px; margin-top: 12px; font-size: 0.87rem; }
+    .pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 0.78rem; font-weight: 700; background: rgba(251, 191, 36, 0.16); color: var(--warn); border: 1px solid rgba(251, 191, 36, 0.35); }
+    .pill.approved { background: rgba(52, 211, 153, 0.16); color: var(--accent-2); border-color: rgba(52, 211, 153, 0.35); }
+    .pill.blacklisted { background: rgba(248, 113, 113, 0.18); color: #fecaca; border-color: rgba(248, 113, 113, 0.4); }
+    .log-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+    .log-item { background: var(--surface-2); border: 1px solid var(--border); border-radius: 11px; padding: 10px 12px; font-size: 0.85rem; }
+    .alert-safety { margin-top: 12px; padding: 12px; border-radius: 11px; background: rgba(248, 113, 113, 0.12); border: 1px solid rgba(248, 113, 113, 0.32); color: #fecaca; font-size: 0.84rem; }
+    .toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); background: #0f172a; color: var(--accent-2); border: 1px solid var(--accent-2); padding: 9px 16px; border-radius: 999px; font-size: 0.84rem; font-weight: 600; opacity: 0; pointer-events: none; transition: opacity 0.22s ease; z-index: 99; }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="nurzing-hero-bar">
+      <div class="brand-top">
+        <div class="brand-mark"><span class="brand-dot"></span><span>NURZING ECOSYSTEM • STAFF</span></div>
+        <div class="badges"><span class="badge">nurzingstaff.pages.dev</span><span class="badge green" id="syncBadge">Sync: Local + Cloud Ready</span></div>
+      </div>
+      <h1>Healthcare Provider & Caregiver Portal</h1>
+      <p class="sub">Apna onboarding complete karein, Doc 2 & 3 terms accept karein, leave/availability update karein, aur Nurzing Admin approval status track karein.</p>
+    </header>
+    <nav class="nav"><a href="#onboard">1. Onboarding</a><a href="#status">2. My Status</a><a href="#leave">3. Leave / Back-Off</a><a href="#sync">4. Cloud Sync</a></nav>
+
+    <section id="onboard" class="card">
+      <h2><span class="tag">DOC 2 & 3</span> Staff Onboarding & Verification</h2>
+      <p class="desc">Apni sahi legal details bharein. Approval ke baad hi duty dispatch assign hogi.</p>
+      <div class="grid-2">
+        <label class="field">Full Legal Name (as on Govt. ID) *<input type="text" id="fullName" placeholder="e.g., Anjali Sharma" /></label>
+        <label class="field">Parent / Spouse Name *<input type="text" id="guardianName" placeholder="Father / Mother / Spouse Name" /></label>
+        <label class="field">Mobile & WhatsApp Number *<input type="tel" id="phone" placeholder="e.g., 98XXXXXXXX" /></label>
+        <label class="field">City / Duty Area *<input type="text" id="city" value="Banda, UP" /></label>
+        <label class="field">Role Category *<select id="role"><option value="Non-Clinical Attendant / Caregiver">Non-Clinical Attendant / Caregiver</option><option value="Qualified / Registered Nurse">Qualified / Registered Nurse</option></select></label>
+        <label class="field">Govt. ID Type & Last 4 Digits (No Hiding ID) *<input type="text" id="govtId" placeholder="e.g., Aadhaar XXXX-1234 / PAN" /></label>
+        <label class="field">Nursing Qualification & Council Reg. No.<input type="text" id="regNo" placeholder="Reg. No. or 'Non-Clinical Attendant'" /></label>
+        <label class="field">Own Name UPI / Bank Payout Detail *<input type="text" id="payoutInfo" placeholder="e.g., anjali@upi" /></label>
+      </div>
+      <label class="field" style="margin-top: 12px;">Current & Permanent Residential Address *<textarea id="address" placeholder="Complete current & permanent address..."></textarea></label>
+      <div class="rules-box">
+        <strong>Key Empanelment Rules (Document 2 Summary):</strong>
+        <ul>
+          <li><strong>Payout Rule:</strong> Payout tabhi milega jab client se full payment Nurzing ke bank/cash mein receive ho jaye (margin deduction ke baad).</li>
+          <li><strong>Zero Backdoor / Poaching:</strong> Client se direct/backdoor ₹ setting (e.g., ₹100 ke bajay ₹80) ya fee discussion strictly illegal/breach hai — is par removal, permanent blacklisting, legal circular, aur high ₹ compensation lagega.</li>
+          <li><strong>Scope & Rx Back-Off:</strong> Non-clinical attendant koi clinical procedure nahi karega. Registered nurse galat/unclear doctor prescription par Nurzing ko inform karke safely back-off kar sakti hai.</li>
+          <li><strong>Confidentiality, IP & No Pass-the-Ball:</strong> Nurzing ke documents/working methods/IP aur patient ka personal/medical data leak karna mana hai; apni galti/theft/law violation ki zimmedari provider ki hogi.</li>
+        </ul>
+      </div>
+      <label class="check-item"><input type="checkbox" id="agreeId" /><span>Main declare karta/karti hoon ki meri sabhi details & Govt. ID bilkul sach hain aur maine koi legal identity nahi chhupayi hai (Doc 3).</span></label>
+      <label class="check-item"><input type="checkbox" id="agreeTerms" /><span>Main <strong>Nurzing Empanelment & Service Agreement (Doc 2)</strong> ki sabhi sharton (payout after full client payment, no backdoor/poaching, blacklisting circular, confidentiality/IP/data protection, advance leave notice, safe Rx back-off, female safety, no pass-the-ball) se poori tarah sehmat hoon.</span></label>
+      <div class="btn-row"><button type="button" class="green" onclick="submitOnboarding()">Submit Onboarding Request</button><button type="button" class="secondary" onclick="loadSample()">Fill Demo Example</button></div>
+    </section>
+
+    <section id="status" class="card">
+      <h2><span class="tag">LIVE STATUS</span> My Application & Duty Status</h2>
+      <p class="desc">Aapki latest onboarding request aur Admin approval status yahan dikhega.</p>
+      <div id="statusBox" class="status-card">Abhi koi onboarding request submit nahi hui hai.</div>
+      <div class="btn-row"><button type="button" onclick="copyRequestPacket()">Copy Request Packet for Admin</button><button type="button" class="secondary" onclick="refreshStatus()">Refresh Status</button></div>
+    </section>
+
+    <section id="leave" class="card">
+      <h2><span class="tag">DOC 2 & 5B</span> Advance Leave Notice / Prescription Back-Off</h2>
+      <p class="desc">Chhutti lene, inactive hone, ya galat/unclear doctor prescription par safe back-off karne se pehle yahan turant record bhejein.</p>
+      <div class="grid-2">
+        <label class="field">Notice / Alert Type<select id="noticeType"><option value="Advance Leave / Inactivity Notice">Advance Leave / Inactivity Notice (Before Duty)</option><option value="Active Duty Leave Request">Active Duty Leave Request (Need Replacement)</option><option value="Wrong/Unclear Prescription Safe Back-Off">Wrong/Unclear Prescription Safe Back-Off</option><option value="Client Pressure for Unauthorized Clinical Work">Client Pressure for Unauthorized Clinical Work</option><option value="Safety / Harassment Alert (112 / Police)">Safety / Harassment Alert (112 / Police)</option></select></label>
+        <label class="field">Effective Date & Time<input type="text" id="noticeTime" placeholder="e.g., Tomorrow 8:00 AM / Immediate" /></label>
+      </div>
+      <label class="field" style="margin-top: 12px;">Details / Reason *<textarea id="noticeReason" placeholder="Clear details likhein taaki Nurzing Admin time se replacement ya safety action le sake..."></textarea></label>
+      <div class="btn-row"><button type="button" onclick="submitNotice()">Record & Send Notice</button><button type="button" class="secondary" onclick="copyLatestNotice()">Copy Notice for WhatsApp</button></div>
+      <div id="noticeList" class="log-list"></div>
+      <div class="alert-safety"><strong>Female & Staff Safety First:</strong> Kisi bhi abuse, threat, harassment ya unlawful act ki sthiti mein turant duty rokein, safe jagah jayein, <strong>112 / Local Police</strong> ko call karein, aur Nurzing Admin ko inform karein.</div>
+    </section>
+
+    <section id="sync" class="card">
+      <h2><span class="tag">₹0 CLOUD</span> Connected Ecosystem Sync (Firebase / JSON Bridge)</h2>
+      <p class="desc">Bina kisi setup ke aap "Copy Request Packet" ya JSON backup se data <strong>NurzingAdmin</strong> mein import kar sakte hain. Live cloud sync ke liye apna free Firebase Realtime DB URL neeche save karein.</p>
+      <label class="field">Optional Free Firebase Realtime DB URL<input type="url" id="fbUrl" placeholder="https://your-project-default-rtdb.firebaseio.com" /></label>
+      <div class="btn-row"><button type="button" class="green" onclick="saveCloudConfig()">Save & Sync Now</button><button type="button" class="secondary" onclick="exportAllJson()">Copy Full JSON Backup</button><button type="button" class="danger" onclick="clearLocal()">Reset Local Data</button></div>
+    </section>
+  </div>
+  <div id="toast" class="toast">Done</div>
+  <script>
+    const STORAGE_KEY = 'nurzing_staff_portal_v1';
+    function getState() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { profile: null, notices: [], fbUrl: '' }; } catch { return { profile: null, notices: [], fbUrl: '' }; } }
+    function saveState(state) { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    async function pushToFirebase(state) {
+      if (!state.fbUrl) return;
+      const base = state.fbUrl.replace(/\/+$/, '');
+      try {
+        if (state.profile) {
+          await fetch(`${base}/staffRequests/${state.profile.id}.json`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(state.profile) });
+        }
+        if (state.notices && state.notices.length) {
+          await fetch(`${base}/staffNotices.json`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(state.notices) });
+        }
+        document.getElementById('syncBadge').textContent = 'Sync: Live Firebase Connected';
+      } catch (err) { document.getElementById('syncBadge').textContent = 'Sync: Offline Saved'; }
+    }
+    async function pullFromFirebase(state) {
+      if (!state.fbUrl || !state.profile) return;
+      const base = state.fbUrl.replace(/\/+$/, '');
+      try {
+        const res = await fetch(`${base}/staffRequests/${state.profile.id}.json`);
+        if (res.ok) {
+          const remote = await res.json();
+          if (remote && remote.status) { state.profile.status = remote.status; state.profile.adminNote = remote.adminNote || ''; saveState(state); }
+        }
+      } catch (e) {}
+    }
+    function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2200); }
+    function copyText(text) {
+      if (!text) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard')); }
+      else { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); showToast('Copied to clipboard'); }
+    }
+    async function submitOnboarding() {
+      const fullName = document.getElementById('fullName').value.trim(), guardianName = document.getElementById('guardianName').value.trim(), phone = document.getElementById('phone').value.trim(), city = document.getElementById('city').value.trim(), role = document.getElementById('role').value, govtId = document.getElementById('govtId').value.trim(), regNo = document.getElementById('regNo').value.trim() || 'Non-Clinical Attendant', payoutInfo = document.getElementById('payoutInfo').value.trim(), address = document.getElementById('address').value.trim(), agreeId = document.getElementById('agreeId').checked, agreeTerms = document.getElementById('agreeTerms').checked;
+      if (!fullName || !guardianName || !phone || !city || !govtId || !payoutInfo || !address) { showToast('Please fill all required (*) fields'); return; }
+      if (!agreeId || !agreeTerms) { showToast('Please accept both declarations (Doc 2 & 3)'); return; }
+      const state = getState();
+      const id = state.profile ? state.profile.id : 'STF-' + Date.now().toString().slice(-6);
+      state.profile = { id, fullName, guardianName, phone, city, role, govtId, regNo, payoutInfo, address, status: 'Pending Admin Approval', adminNote: '', submittedAt: new Date().toLocaleString('en-IN') };
+      saveState(state); await pushToFirebase(state); renderUI(); showToast('Onboarding Request Submitted!'); document.getElementById('status').scrollIntoView();
+    }
+    async function submitNotice() {
+      const state = getState(), type = document.getElementById('noticeType').value, time = document.getElementById('noticeTime').value.trim() || 'Immediate', reason = document.getElementById('noticeReason').value.trim();
+      if (!reason) { showToast('Please write details/reason first'); return; }
+      const entry = { id: 'NTC-' + Date.now().toString().slice(-5), staffId: state.profile ? state.profile.id : 'UNREGISTERED', staffName: state.profile ? state.profile.fullName : 'Provider', phone: state.profile ? state.profile.phone : '', type, time, reason, createdAt: new Date().toLocaleString('en-IN') };
+      state.notices.unshift(entry); saveState(state); await pushToFirebase(state); document.getElementById('noticeReason').value = ''; renderUI(); showToast('Notice recorded');
+    }
+    function copyRequestPacket() { const state = getState(); if (!state.profile) { showToast('Submit onboarding form first'); return; } copyText(`NURZING_STAFF_PACKET::${JSON.stringify(state.profile)}`); }
+    function copyLatestNotice() { const state = getState(); if (!state.notices.length) { showToast('No notice recorded yet'); return; } const n = state.notices[0]; copyText(`*NurzingStaff Alert (${n.id})*\n• Staff: ${n.staffName} (${n.staffId})\n• Type: ${n.type}\n• Effective: ${n.time}\n• Details: ${n.reason}`); }
+    async function saveCloudConfig() { const state = getState(); state.fbUrl = document.getElementById('fbUrl').value.trim(); saveState(state); if (state.fbUrl) { await pushToFirebase(state); await pullFromFirebase(state); renderUI(); showToast('Firebase URL saved & synced'); } else { showToast('Local mode active'); } }
+    function exportAllJson() { copyText(JSON.stringify(getState(), null, 2)); }
+    async function refreshStatus() { const state = getState(); await pullFromFirebase(state); renderUI(); showToast('Status refreshed'); }
+    function clearLocal() { localStorage.removeItem(STORAGE_KEY); renderUI(); showToast('Local data reset'); }
+    function loadSample() {
+      document.getElementById('fullName').value = 'Priya Verma'; document.getElementById('guardianName').value = 'Ramesh Verma'; document.getElementById('phone').value = '9800000000'; document.getElementById('city').value = 'Banda, UP'; document.getElementById('role').value = 'Non-Clinical Attendant / Caregiver'; document.getElementById('govtId').value = 'Aadhaar XXXX-4821'; document.getElementById('regNo').value = 'Non-Clinical Attendant'; document.getElementById('payoutInfo').value = 'priya@upi'; document.getElementById('address').value = 'Civil Lines, Banda, Uttar Pradesh'; document.getElementById('agreeId').checked = true; document.getElementById('agreeTerms').checked = true; showToast('Demo data filled');
+    }
+    function renderUI() {
+      const state = getState();
+      document.getElementById('fbUrl').value = state.fbUrl || '';
+      if (state.fbUrl) document.getElementById('syncBadge').textContent = 'Sync: Firebase Configured';
+      const statusBox = document.getElementById('statusBox');
+      if (!state.profile) { statusBox.innerHTML = 'Abhi koi onboarding request submit nahi hui hai.'; }
+      else {
+        const p = state.profile, st = (p.status || '').toLowerCase();
+        const cls = st.includes('approved') ? 'approved' : (st.includes('blacklist') ? 'blacklisted' : '');
+        statusBox.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;"><strong>${p.fullName} (${p.id})</strong><span class="pill ${cls}">${p.status}</span></div><div><strong>Role:</strong> ${p.role} • <strong>City:</strong> ${p.city}</div><div><strong>Govt. ID:</strong> ${p.govtId} • <strong>Reg:</strong> ${p.regNo}</div><div><strong>Payout:</strong> ${p.payoutInfo} • <strong>Submitted:</strong> ${p.submittedAt}</div>${p.adminNote ? `<div style="margin-top:6px;color:#38bdf8;"><strong>Admin Note:</strong> ${p.adminNote}</div>` : ''}`;
+      }
+      const list = document.getElementById('noticeList');
+      list.innerHTML = !state.notices.length ? '' : state.notices.map(n => `<div class="log-item"><strong>${n.type}</strong> (${n.id}) — <span style="color:#94a3b8;">${n.time}</span><br/><span>${n.reason}</span></div>`).join('');
+    }
+    renderUI();
+  </script>
+</body>
+</html>
