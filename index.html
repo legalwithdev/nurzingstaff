@@ -95,6 +95,26 @@ html[data-theme="dark"] .refpill{background:rgba(235,214,155,.10)}
           </div>
 
           <div class="field">
+            <label for="gender">Gender</label>
+            <select id="gender">
+              <option value="">Prefer not to say</option>
+              <option>Female</option>
+              <option>Male</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="photo">Profile picture</label>
+            <input id="photo" type="file" accept="image/*" />
+            <p class="muted" style="font-size:.78rem;margin:.35rem 0 0">
+              Required for a digital profile. Face clearly visible, plain background.
+              Resized on your phone — under 35 KB.
+            </p>
+            <div id="photoPrev" style="margin-top:10px"></div>
+          </div>
+
+          <div class="field">
             <label for="phone">Mobile number</label>
             <input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+91" />
           </div>
@@ -457,6 +477,7 @@ html[data-theme="dark"] .refpill{background:rgba(235,214,155,.10)}
       qualification:val('qualification'), reg_type:val('reg_type')||'none',
       reg_number:val('reg_number'), years:parseInt(val('years'),10)||0,
       city:val('city'), area:val('area'), care_types:cares, notes:val('notes'),
+      gender:val('gender'), photo_url:photoFull || '', photo_thumb:photoThumb || '',
       wants_verification: (function(){
         var r=document.querySelector('input[name="wantVerify"]:checked');
         return r ? r.value === '1' : true;
