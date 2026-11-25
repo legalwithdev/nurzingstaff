@@ -396,6 +396,45 @@ html[data-theme="dark"] .refpill{background:rgba(235,214,155,.10)}
   // the number lives on the server; see /api/wa
   var form=document.getElementById('staffForm');
   var err=document.getElementById('err');
+
+  // ---- profile photo: two sizes made on the phone ----
+  var photoFull = '', photoThumb = '';
+  (function(){
+    var input = document.getElementById('photo');
+    var prev = document.getElementById('photoPrev');
+    if (!input) return;
+    function make(img, size, quality){
+      var scale = Math.min(size / img.width, size / img.height, 1);
+      var w = Math.round(img.width * scale), h = Math.round(img.height * scale);
+      var c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      return c.toDataURL('image/jpeg', quality);
+    }
+    input.addEventListener('change', function(){
+      var f = input.files && input.files[0];
+      if (!f) return;
+      if (!/^image\//.test(f.type)) { err.textContent = 'Please choose an image file.'; return; }
+      var reader = new FileReader();
+      reader.onload = function(e){
+        var img = new Image();
+        img.onload = function(){
+          photoThumb = make(img, 96, 0.7);
+          // shrink quality until the full photo is under 35 KB
+          var q = 0.75, out = make(img, 400, q);
+          while (out.length > 47000 && q > 0.3) { q -= 0.1; out = make(img, 400, q); }
+          photoFull = out;
+          var kb = Math.round(photoFull.length / 1024);
+          prev.innerHTML = '<img src="' + photoFull + '" alt="" style="width:88px;height:88px;object-fit:cover;border-radius:50%;border:1px solid var(--line)" />' +
+            '<div class="muted" style="font-size:.75rem;margin-top:6px">' + kb + ' KB</div>';
+          if (photoFull.length > 47000) { err.textContent = 'That photo is too detailed. Please choose a simpler one.'; photoFull = ''; }
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(f);
+    });
+  })();
+
   var submitBtn=document.getElementById('submitBtn');
   function val(id){ var e=document.getElementById(id); return e? e.value.trim() : ''; }
 
@@ -405,6 +444,13 @@ html[data-theme="dark"] .refpill{background:rgba(235,214,155,.10)}
     if(val('phone').replace(/\D/g,'').length<8){ err.textContent='Please enter a valid mobile number.'; return; }
     if(val('designation').length<2){ err.textContent='Please enter your designation exactly as you want it shown.'; return; }
     if(val('city').length<2){ err.textContent='Please enter your city.'; return; }
+
+    var wv = document.querySelector('input[name="wantVerify"]:checked');
+    var wantsVerify = wv ? wv.value === '1' : true;
+    if (!wantsVerify && !photoFull) {
+      err.textContent = 'A profile picture is required for a digital profile.';
+      return;
+    }
 
     var cares=[]; document.querySelectorAll('#careBox input:checked').forEach(function(c){cares.push(c.value);});
     var payload={ name:val('name'), phone:val('phone'), designation:val('designation'),
