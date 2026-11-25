@@ -138,8 +138,11 @@ html[data-theme="dark"] .refpill{background:rgba(235,214,155,.10)}
                 <option>GNM</option>
                 <option>ANM</option>
                 <option>BPT</option>
+                <option>MPT</option>
+                <option>Diploma in Nursing</option>
                 <option>Other</option>
               </select>
+              <input id="qualification_other" type="text" placeholder="Write your qualification" style="margin-top:8px" />
             </div>
             <div class="field">
               <label for="years">Years of experience</label>
@@ -154,7 +157,9 @@ html[data-theme="dark"] .refpill{background:rgba(235,214,155,.10)}
                 <option value="none">Not registered</option>
                 <option value="RN&amp;RM">RN&amp;RM</option>
                 <option value="RANM">RANM</option>
+                <option value="other">Other</option>
               </select>
+              <input id="reg_type_other" type="text" placeholder="Write your registration type" style="margin-top:8px" />
             </div>
             <div class="field">
               <label for="reg_number">Registration number (optional)</label>
@@ -182,6 +187,39 @@ html[data-theme="dark"] .refpill{background:rgba(235,214,155,.10)}
             <label><input type="checkbox" value="Elderly Care" /> Elderly Care</label>
             <label><input type="checkbox" value="Physiotherapy" /> Physiotherapy</label>
             <label><input type="checkbox" value="Attendant" /> Attendant</label>
+            <label><input type="checkbox" value="__other" /> Other</label>
+          </div>
+          <input id="care_other" type="text" placeholder="Write the care you provide" style="margin-top:8px" />
+
+          <div class="field">
+            <label>Languages you speak</label>
+            <div class="checks" id="langBox">
+              <label><input type="checkbox" value="Hindi" /> Hindi</label>
+              <label><input type="checkbox" value="English" /> English</label>
+              <label><input type="checkbox" value="Bengali" /> Bengali</label>
+              <label><input type="checkbox" value="Marathi" /> Marathi</label>
+              <label><input type="checkbox" value="Telugu" /> Telugu</label>
+              <label><input type="checkbox" value="Tamil" /> Tamil</label>
+              <label><input type="checkbox" value="Kannada" /> Kannada</label>
+              <label><input type="checkbox" value="Malayalam" /> Malayalam</label>
+              <label><input type="checkbox" value="Gujarati" /> Gujarati</label>
+              <label><input type="checkbox" value="Punjabi" /> Punjabi</label>
+              <label><input type="checkbox" value="Urdu" /> Urdu</label>
+              <label><input type="checkbox" value="__other" /> Other</label>
+            </div>
+            <input id="lang_other" type="text" placeholder="Other language" style="margin-top:8px" />
+          </div>
+
+          <div class="field">
+            <label>Shifts you can work</label>
+            <div class="checks" id="shiftBox">
+              <label><input type="checkbox" value="Day (12h)" /> Day (12h)</label>
+              <label><input type="checkbox" value="Night (12h)" /> Night (12h)</label>
+              <label><input type="checkbox" value="24-hour live-in" /> 24-hour live-in</label>
+              <label><input type="checkbox" value="Hourly visits" /> Hourly visits</label>
+              <label><input type="checkbox" value="__other" /> Other</label>
+            </div>
+            <input id="shift_other" type="text" placeholder="Other shift" style="margin-top:8px" />
           </div>
 
           <div class="field">
@@ -457,6 +495,13 @@ html[data-theme="dark"] .refpill{background:rgba(235,214,155,.10)}
 
   var submitBtn=document.getElementById('submitBtn');
   function val(id){ var e=document.getElementById(id); return e? e.value.trim() : ''; }
+  // "Other" everywhere: whatever they type becomes the value we store.
+  function pick(boxId, otherId){
+    var out=[];
+    document.querySelectorAll('#'+boxId+' input:checked').forEach(function(c){ if(c.value!=='__other') out.push(c.value); });
+    var o = val(otherId); if(o) out.push(o);
+    return out;
+  }
 
   form.addEventListener('submit', function(ev){
     ev.preventDefault(); err.textContent='';
@@ -472,11 +517,17 @@ html[data-theme="dark"] .refpill{background:rgba(235,214,155,.10)}
       return;
     }
 
-    var cares=[]; document.querySelectorAll('#careBox input:checked').forEach(function(c){cares.push(c.value);});
+    var cares=[]; document.querySelectorAll('#careBox input:checked').forEach(function(c){ if(c.value!=='__other') cares.push(c.value); });
+    if(val('care_other')) cares.push(val('care_other'));
     var payload={ name:val('name'), phone:val('phone'), designation:val('designation'),
       qualification:val('qualification'), reg_type:val('reg_type')||'none',
       reg_number:val('reg_number'), years:parseInt(val('years'),10)||0,
       city:val('city'), area:val('area'), care_types:cares, notes:val('notes'),
+      languages:pick('langBox','lang_other'),
+      shifts:pick('shiftBox','shift_other'),
+      qualification_other:val('qualification_other'),
+      reg_type_other:val('reg_type_other'),
+      care_other:val('care_other'),
       gender:val('gender'), photo_url:photoFull || '', photo_thumb:photoThumb || '',
       wants_verification: (function(){
         var r=document.querySelector('input[name="wantVerify"]:checked');
