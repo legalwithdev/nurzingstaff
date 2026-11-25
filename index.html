@@ -1,185 +1,304 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#062A28" />
-  <title>NURZING Staff - Provider Onboarding & Duty Portal</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg: #f5f8f7; --surface: #ffffff; --surface-soft: #eef4f3;
-      --ink: #062a28; --ink-muted: #4b6361; --border: rgba(6, 42, 40, 0.12);
-      --forest: #062a28; --mint: #0f766e; --mint-light: #e6f4f1;
-      --amber: #b45309; --amber-bg: #fef3c7; --danger: #b91c1c; --danger-bg: #fee2e2;
-      --radius: 18px; --shadow: 0 10px 28px rgba(6, 42, 40, 0.06);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { max-width: 100%; overflow-x: hidden; overflow-y: auto; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
-    body { font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.58; padding-bottom: 72px; }
-    h1, h2, .brand-title { font-family: "Fraunces", Georgia, serif; letter-spacing: -0.02em; }
-    .topbar { background: var(--forest); color: #ffffff; padding: 18px 16px 22px; }
-    .wrap { max-width: 820px; margin: 0 auto; }
-    .topbar-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
-    .brand-title { font-size: 1.25rem; font-weight: 600; }
-    .pill-top { font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,0.12); color: #d1fae5; }
-    .hero-copy h1 { font-size: 1.55rem; font-weight: 500; margin-bottom: 6px; color: #fff; }
-    .hero-copy p { font-size: 0.92rem; color: rgba(255,255,255,0.82); }
-    .tabs { position: sticky; top: 0; z-index: 20; background: rgba(245,248,247,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 10px 16px; }
-    .tab-bar { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
-    .tab-bar::-webkit-scrollbar { display: none; }
-    .tab-btn { flex: 0 0 auto; border: 1px solid var(--border); background: var(--surface); color: var(--ink); padding: 8px 15px; border-radius: 999px; font-family: "Inter", sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
-    .tab-btn.active { background: var(--forest); color: #fff; border-color: var(--forest); }
-    .main-area { padding: 18px 16px 0; }
-    .view-panel { display: none; }
-    .view-panel.active { display: block; }
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
-    .card h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 4px; color: var(--forest); }
-    .card-sub { font-size: 0.88rem; color: var(--ink-muted); margin-bottom: 16px; }
-    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 12px; }
-    @media (min-width: 640px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
-    label.field { display: flex; flex-direction: column; gap: 6px; font-size: 0.84rem; font-weight: 600; color: var(--ink); }
-    input, select, textarea { width: 100%; border: 1px solid rgba(6,42,40,0.2); background: var(--surface); color: var(--ink); border-radius: 12px; padding: 11px 13px; font-family: "Inter", sans-serif; font-size: 16px; outline: none; }
-    textarea { min-height: 78px; resize: vertical; }
-    .policy-box { background: var(--surface-soft); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin: 14px 0; font-size: 0.85rem; }
-    .policy-box ul { padding-left: 18px; margin-top: 6px; display: flex; flex-direction: column; gap: 6px; color: var(--ink-muted); }
-    .consent-check { display: flex; align-items: flex-start; gap: 10px; background: var(--mint-light); border: 1px solid rgba(15,118,110,0.22); border-radius: 12px; padding: 11px 13px; margin-bottom: 10px; font-size: 0.86rem; cursor: pointer; }
-    .consent-check input { width: 18px; height: 18px; margin-top: 2px; flex: 0 0 auto; accent-color: var(--forest); }
-    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
-    .btn { border: none; border-radius: 12px; padding: 11px 16px; font-family: "Inter", sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer; }
-    .btn-primary { background: var(--forest); color: #fff; }
-    .btn-mint { background: var(--mint); color: #fff; }
-    .btn-soft { background: var(--surface-soft); color: var(--ink); border: 1px solid var(--border); }
-    .btn-danger { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(185,28,28,0.25); }
-    .status-banner { background: var(--surface-soft); border: 1px solid var(--border); border-radius: 14px; padding: 15px; font-size: 0.9rem; }
-    .badge-status { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 0.78rem; font-weight: 700; background: var(--amber-bg); color: var(--amber); }
-    .badge-status.ok { background: var(--mint-light); color: var(--mint); }
-    .badge-status.bad { background: var(--danger-bg); color: var(--danger); }
-    .log-item { background: var(--surface-soft); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-top: 10px; font-size: 0.86rem; }
-    .safety-note { margin-top: 14px; padding: 12px 14px; border-radius: 12px; background: var(--danger-bg); color: var(--danger); font-size: 0.85rem; }
-    .toast { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); background: var(--forest); color: #fff; padding: 10px 18px; border-radius: 999px; font-size: 0.85rem; font-weight: 600; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; z-index: 99; }
-    .toast.show { opacity: 1; }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#062A28" />
+<script>(function(){try{var t=localStorage.getItem('nz-theme')||'auto';
+var d=(t==='dark')||(t!=='light'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+document.documentElement.setAttribute('data-theme',d?'dark':'light');
+var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',d?'#081918':'#062A28');}catch(e){}})();</script>
+<title>Join NURZING as a healthcare professional | NURZING Staff</title>
+<meta name="description" content="List yourself with NURZING. Your designation is shown exactly as you enter it." />
+<meta name="robots" content="noindex, follow" />
+<link rel="icon" href="https://nurzing.pages.dev/favicon.svg" />
+<link rel="apple-touch-icon" href="https://nurzing.pages.dev/icons/apple-touch-icon-180.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://nurzing.pages.dev/assets/site.css" />
+<style>
+main#top{padding-top:104px;padding-bottom:70px}
+@media(max-width:700px){main#top{padding-top:96px}}
+.sform{max-width:760px;margin:0 auto}
+.scard{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow)}
+html[data-theme="dark"] .scard{background:rgba(255,255,255,.03)}
+.snote{background:var(--cream-2);border-left:3px solid var(--gold-500);border-radius:10px;padding:12px 15px;font-size:.84rem;color:var(--muted);margin:0 0 20px;line-height:1.5}
+html[data-theme="dark"] .snote{background:rgba(235,214,155,.07)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+@media(max-width:620px){.two{grid-template-columns:1fr}}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:.45rem .9rem;margin:.3rem 0 18px}
+@media(max-width:620px){.checks{grid-template-columns:1fr}}
+.checks label{display:flex;align-items:center;gap:.5rem;font-weight:400;font-size:.88rem;margin:0;cursor:pointer}
+.checks input{width:16px;height:16px;accent-color:var(--teal-400);margin:0}
+.serr{color:#B43C3C;font-size:.86rem;min-height:1.2rem;margin:.4rem 0 0}
+.okwrap{text-align:center;padding:34px 22px}
+.okwrap .tick{width:58px;height:58px;border-radius:50%;background:var(--gold-300);display:grid;place-items:center;margin:0 auto 16px}
+.okwrap h2{font-family:var(--serif);font-size:1.55rem;margin:0 0 .5rem}
+.refpill{display:inline-block;margin:.8rem 0 1.1rem;padding:.5rem 1rem;border-radius:999px;background:var(--cream-2);border:1px solid var(--line);font-weight:700;letter-spacing:.08em}
+html[data-theme="dark"] .refpill{background:rgba(235,214,155,.10)}
+.wabtn{display:inline-flex;align-items:center;gap:.5rem;background:var(--teal-900);color:#F5EFE3;text-decoration:none;border-radius:999px;padding:.8rem 1.35rem;font-weight:600;font-size:.92rem}
+.hidden{display:none!important}
+</style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="wrap">
-      <div class="topbar-row">
-        <div class="brand-title">NURZING <span>- Staff Webapp</span></div>
-        <div class="pill-top" id="syncStatus">Sync: Local + Cloud Ready</div>
-      </div>
-      <div class="hero-copy">
-        <h1>Healthcare Provider & Caregiver Onboarding</h1>
-        <p>Verified home-care & nursing coordination portal - submit onboarding (Doc 2 & 3), track approval, and log advance leave or prescription back-offs.</p>
-      </div>
-    </div>
-  </header>
-  <div class="tabs">
-    <div class="wrap tab-bar">
-      <button type="button" class="tab-btn active" onclick="switchTab('onboard', this)">Onboarding</button>
-      <button type="button" class="tab-btn" onclick="switchTab('status', this)">My Status</button>
-      <button type="button" class="tab-btn" onclick="switchTab('notices', this)">Leave / Back-Off</button>
-      <button type="button" class="tab-btn" onclick="switchTab('sync', this)">Cloud Sync</button>
+
+<header id="hdr">
+  <div class="wrap nav">
+    <a href="https://nurzing.pages.dev/" class="brand" aria-label="NURZING home">
+      <svg class="mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <circle cx="20" cy="20" r="18.2" stroke="#C69C42" stroke-width="1.4"/>
+        <circle cx="20" cy="20" r="12" stroke="#0E524C" stroke-width="1"/>
+        <path d="M14 27V13l12 14V13" stroke="#073331" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      NURZING <span style="font-family:var(--sans);font-size:.62rem;letter-spacing:.18em;color:var(--gold-500);margin-left:.4rem">STAFF</span>
+    </a>
+    <nav class="nav-links">
+      <a href="https://nurzing.pages.dev/">Home</a>
+      <a href="https://nurzing.pages.dev/services.html">Services</a>
+      <a href="https://nurzing.pages.dev/faq.html">FAQ</a>
+    </nav>
+    <div class="nav-cta">
+      <button class="theme-btn" id="themeBtn" data-state="auto" type="button" aria-label="Switch theme" title="Theme: Auto">
+        <svg class="ti ti-auto" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.2" stroke="currentColor" stroke-width="1.6"/><path d="M12 3.8v16.4" stroke="currentColor" stroke-width="1.6"/><path d="M12 3.8a8.2 8.2 0 0 1 0 16.4" fill="currentColor"/></svg>
+        <svg class="ti ti-light" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.7"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.2 5.2l1.6 1.6M17.2 17.2l1.6 1.6M18.8 5.2l-1.6 1.6M6.8 17.2l-1.6 1.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <svg class="ti ti-dark" viewBox="0 0 24 24" fill="none"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a7 7 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <a class="nav-phone" href="tel:+919180000000">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z" stroke="#0E524C" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        +91 91800 00000
+      </a>
     </div>
   </div>
-  <main class="wrap main-area">
-    <div id="tab-onboard" class="view-panel active">
-      <div class="card">
-        <h2>Staff Verification & Empanelment (Doc 2 & 3)</h2>
-        <p class="card-sub">Fill accurate legal details. Duty dispatch is enabled only after Nurzing Admin approval.</p>
-        <div class="grid-2">
-          <label class="field">Full Legal Name (Govt. ID) *<input type="text" id="fullName" placeholder="e.g., Anjali Sharma" /></label>
-          <label class="field">Father / Mother / Spouse Name *<input type="text" id="guardianName" placeholder="Parent / Spouse Name" /></label>
-          <label class="field">Mobile & WhatsApp Number *<input type="tel" id="phone" placeholder="e.g., 98XXXXXXXX" /></label>
-          <label class="field">City / Area *<input type="text" id="city" value="Banda, UP" /></label>
-          <label class="field">Role Category *<select id="role"><option value="Non-Clinical Attendant / Caregiver">Non-Clinical Attendant / Caregiver</option><option value="Qualified / Registered Nurse">Qualified / Registered Nurse</option></select></label>
-          <label class="field">Govt. ID & Last 4 Digits (No Hiding) *<input type="text" id="govtId" placeholder="Aadhaar XXXX-1234 / PAN" /></label>
-          <label class="field">Qualification & Council Reg. No.<input type="text" id="regNo" placeholder="Reg. No. or 'Non-Clinical Attendant'" /></label>
-          <label class="field">Own Name UPI / Bank Payout *<input type="text" id="payoutInfo" placeholder="e.g., anjali@upi" /></label>
+</header>
+
+<main id="top">
+  <div class="wrap">
+    <div class="sform">
+      <span class="eyebrow">NURZING Staff</span>
+      <h1 style="font-family:var(--serif);font-size:2.1rem;line-height:1.2;margin:.5rem 0 .7rem">
+        Join NURZING as a healthcare professional
+      </h1>
+      <p class="muted" style="font-size:1rem;max-width:38rem;margin:0 0 26px">
+        Nurses, attendants and therapists — list yourself and receive care requests near you.
+        Your designation is shown <strong>exactly as you type it</strong>.
+      </p>
+
+      <div class="scard" id="formCard">
+        <p class="snote">Your registration number is optional. It is shown as verified only after our
+          team checks it against the register — we never claim a check we have not done.</p>
+
+        <form id="staffForm" novalidate>
+          <div class="field">
+            <label for="name">Full name</label>
+            <input id="name" type="text" autocomplete="name" placeholder="As you want it shown" />
+          </div>
+
+          <div class="field">
+            <label for="phone">Mobile number</label>
+            <input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+91" />
+          </div>
+
+          <div class="field">
+            <label for="designation">Your designation</label>
+            <input id="designation" type="text" placeholder="RN&RM Nurse (ICU)" />
+            <p class="muted" style="font-size:.78rem;margin:.35rem 0 0">
+              Type it exactly as you want it shown on your card — for example
+              <em>RN&amp;RM Nurse (ICU)</em>, <em>RN&amp;RM Nurse (Maternity)</em>,
+              <em>Attendant / Caregiver</em>.
+            </p>
+          </div>
+
+          <div class="two">
+            <div class="field">
+              <label for="qualification">Qualification</label>
+              <select id="qualification">
+                <option value="">Select…</option>
+                <option>B.Sc Nursing</option>
+                <option>GNM</option>
+                <option>ANM</option>
+                <option>BPT</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="years">Years of experience</label>
+              <input id="years" type="number" min="0" max="60" value="0" />
+            </div>
+          </div>
+
+          <div class="two">
+            <div class="field">
+              <label for="reg_type">Registration</label>
+              <select id="reg_type">
+                <option value="none">Not registered</option>
+                <option value="RN&amp;RM">RN&amp;RM</option>
+                <option value="RANM">RANM</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="reg_number">Registration number (optional)</label>
+              <input id="reg_number" type="text" placeholder="e.g. KA/12345" />
+            </div>
+          </div>
+
+          <div class="two">
+            <div class="field">
+              <label for="city">City</label>
+              <input id="city" type="text" placeholder="Bengaluru" autocomplete="address-level2" />
+            </div>
+            <div class="field">
+              <label for="area">Area</label>
+              <input id="area" type="text" placeholder="Koramangala" />
+            </div>
+          </div>
+
+          <label style="display:block;font-size:.82rem;font-weight:600;margin:0 0 .45rem">What care can you provide?</label>
+          <div class="checks" id="careBox">
+            <label><input type="checkbox" value="Home Nursing" /> Home Nursing</label>
+            <label><input type="checkbox" value="ICU-trained" /> ICU-trained</label>
+            <label><input type="checkbox" value="Post-Surgical" /> Post-Surgical</label>
+            <label><input type="checkbox" value="Mother &amp; Baby" /> Mother &amp; Baby</label>
+            <label><input type="checkbox" value="Elderly Care" /> Elderly Care</label>
+            <label><input type="checkbox" value="Physiotherapy" /> Physiotherapy</label>
+            <label><input type="checkbox" value="Attendant" /> Attendant</label>
+          </div>
+
+          <div class="field">
+            <label for="notes">Anything else (optional)</label>
+            <textarea id="notes" rows="3" placeholder="Languages, preferred shifts, areas you can travel to…"></textarea>
+          </div>
+
+          <button class="btn btn-gold btn-lg" type="submit" id="submitBtn" style="width:100%;justify-content:center">
+            Submit my details <span class="arrow">&rarr;</span>
+          </button>
+          <p class="serr" id="err"></p>
+        </form>
+      </div>
+
+      <div class="scard okwrap hidden" id="doneCard">
+        <div class="tick">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7"
+            stroke="#062A28" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-        <label class="field" style="margin-top:12px;">Current & Permanent Address *<textarea id="address" placeholder="Full residential address..."></textarea></label>
-        <div class="policy-box">
-          <strong>Core Terms (Document 2 Summary)</strong>
-          <ul>
-            <li><strong>Payout Condition:</strong> Payout is released after full client payment is received by Nurzing (after platform margin).</li>
-            <li><strong>Zero Backdoor / Poaching:</strong> Direct/backdoor fee setting or client poaching triggers removal, permanent blacklisting, legal circular, and compensation claim.</li>
-            <li><strong>Clinical Scope & Rx Back-Off:</strong> Non-clinical attendants do not perform clinical procedures; nurses may safely back off from wrong/unclear prescriptions after informing Nurzing.</li>
-            <li><strong>Confidentiality, IP & No Pass-the-Ball:</strong> Nurzing operational/IP/patient records must stay confidential; providers bear responsibility for their own fault, theft, or law violations.</li>
-          </ul>
-        </div>
-        <label class="consent-check"><input type="checkbox" id="agreeId" /><span>I declare all submitted details and Govt. ID are true with no hidden legal identity (Doc 3).</span></label>
-        <label class="consent-check"><input type="checkbox" id="agreeTerms" /><span>I accept Nurzing Empanelment & Service Agreement (Doc 2), including advance leave notice, safe Rx back-off, female safety, confidentiality/IP protection, and zero backdoor/poaching rules.</span></label>
-        <div class="actions"><button type="button" class="btn btn-mint" onclick="submitOnboarding()">Submit Request</button><button type="button" class="btn btn-soft" onclick="fillDemo()">Fill Sample Data</button></div>
+        <h2 id="doneTitle">Details received.</h2>
+        <p class="muted" id="doneMsg" style="margin-bottom:0">Our team will check your details and contact you.</p>
+        <div class="refpill" id="refBox"></div>
+        <div><a class="wabtn" id="waBtn" href="#" target="_blank" rel="noopener">Message us on WhatsApp</a></div>
       </div>
     </div>
-    <div id="tab-status" class="view-panel">
-      <div class="card">
-        <h2>Application & Approval Status</h2>
-        <p class="card-sub">Check your current approval status or copy your packet for NurzingAdmin.</p>
-        <div id="statusCard" class="status-banner">No onboarding request submitted yet.</div>
-        <div class="actions"><button type="button" class="btn btn-primary" onclick="copyPacket()">Copy Request Packet</button><button type="button" class="btn btn-soft" onclick="refreshFromCloud()">Refresh Status</button></div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div class="fbrand">
+        <span class="brand">
+          <svg class="mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <circle cx="20" cy="20" r="18.2" stroke="#C69C42" stroke-width="1.4"/>
+            <path d="M14 27V13l12 14V13" stroke="#EBD69B" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          NURZING
+        </span>
+        <p>A new-age nursing bureau connecting families with nurses and healthcare attendants — transparently, and on demand.</p>
+      </div>
+      <div class="fcol">
+        <h4>NURZING</h4>
+        <a href="https://nurzing.pages.dev/">Home</a>
+        <a href="https://nurzing.pages.dev/services.html">Services</a>
+        <a href="https://nurzing.pages.dev/faq.html">FAQ</a>
+        <a href="https://nurzing.pages.dev/book.html">Book a nurse</a>
+      </div>
+      <div class="fcol">
+        <h4>For professionals</h4>
+        <a href="/">Join as a professional</a>
+        <a href="https://nurzingadmin.pages.dev/">Admin console</a>
       </div>
     </div>
-    <div id="tab-notices" class="view-panel">
-      <div class="card">
-        <h2>Advance Leave & Prescription Back-Off Log</h2>
-        <p class="card-sub">Log advance leave/inactivity notices or wrong/unclear prescription back-offs promptly.</p>
-        <div class="grid-2">
-          <label class="field">Log Type<select id="noticeType"><option value="Advance Leave / Inactivity Notice">Advance Leave / Inactivity Notice</option><option value="Active Duty Leave Request">Active Duty Leave Request</option><option value="Wrong/Unclear Prescription Safe Back-Off">Wrong/Unclear Prescription Safe Back-Off</option><option value="Unauthorized Clinical Pressure">Unauthorized Clinical Pressure</option><option value="Safety / Harassment Alert (112 / Police)">Safety / Harassment Alert (112 / Police)</option></select></label>
-          <label class="field">Effective Date / Time<input type="text" id="noticeTime" placeholder="e.g., Tomorrow 8:00 AM" /></label>
-        </div>
-        <label class="field" style="margin-top:12px;">Details / Reason *<textarea id="noticeReason" placeholder="Explain clearly so Nurzing can arrange replacement or safety response..."></textarea></label>
-        <div class="actions"><button type="button" class="btn btn-mint" onclick="saveNotice()">Save Notice</button><button type="button" class="btn btn-soft" onclick="copyNotice()">Copy WhatsApp Alert</button></div>
-        <div id="noticeList"></div>
-        <div class="safety-note"><strong>Safety First:</strong> In case of abuse, threat, harassment, or unlawful act, stop duty immediately, move to safety, call <strong>112 / Police</strong>, and notify Nurzing Admin.</div>
-      </div>
+    <div class="fbottom">
+      <span>© <span id="yr"></span> NURZING — nursing bureau and placement service</span>
     </div>
-    <div id="tab-sync" class="view-panel">
-      <div class="card">
-        <h2>Connected Cloud Sync & Backup</h2>
-        <p class="card-sub">Use free Firebase Realtime Database URL for cross-device sync with NurzingAdmin, or export JSON anytime.</p>
-        <label class="field">Firebase Realtime Database URL<input type="url" id="fbUrl" placeholder="https://your-project-default-rtdb.firebaseio.com" /></label>
-        <div class="actions"><button type="button" class="btn btn-mint" onclick="saveSyncConfig()">Save & Sync</button><button type="button" class="btn btn-soft" onclick="copyJson()">Copy JSON Backup</button><button type="button" class="btn btn-danger" onclick="resetStaffData()">Reset Local Data</button></div>
-      </div>
-    </div>
-  </main>
-  <div id="toast" class="toast">Saved</div>
-  <script>
-    const KEY = 'nurzing_staff_v2';
-    function loadState() { try { return JSON.parse(localStorage.getItem(KEY)) || { profile: null, notices: [], fbUrl: '' }; } catch { return { profile: null, notices: [], fbUrl: '' }; } }
-    function saveState(s) { localStorage.setItem(KEY, JSON.stringify(s)); }
-    function switchTab(name, btn) { document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.getElementById('tab-' + name).classList.add('active'); if (btn) btn.classList.add('active'); window.scrollTo({ top: 0, behavior: 'instant' }); }
-    function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2100); }
-    function copyText(txt) { if (!txt) return; if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(() => showToast('Copied')); else { const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); showToast('Copied'); } }
-    async function pushCloud(s) { if (!s.fbUrl) return; const base = s.fbUrl.replace(/\/+$/, ''); try { if (s.profile) await fetch(`${base}/staffRequests/${s.profile.id}.json`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(s.profile) }); if (s.notices.length) await fetch(`${base}/staffNotices.json`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(s.notices) }); document.getElementById('syncStatus').textContent = 'Sync: Firebase Live'; } catch { document.getElementById('syncStatus').textContent = 'Sync: Offline Saved'; } }
-    async function refreshFromCloud() { const s = loadState(); if (s.fbUrl && s.profile) { const base = s.fbUrl.replace(/\/+$/, ''); try { const r = await fetch(`${base}/staffRequests/${s.profile.id}.json`); if (r.ok) { const d = await r.json(); if (d && d.status) { s.profile.status = d.status; s.profile.adminNote = d.adminNote || ''; saveState(s); } } } catch {} } render(); showToast('Status updated'); }
-    async function submitOnboarding() {
-      const fullName = document.getElementById('fullName').value.trim(), guardianName = document.getElementById('guardianName').value.trim(), phone = document.getElementById('phone').value.trim(), city = document.getElementById('city').value.trim(), role = document.getElementById('role').value, govtId = document.getElementById('govtId').value.trim(), regNo = document.getElementById('regNo').value.trim() || 'Non-Clinical Attendant', payoutInfo = document.getElementById('payoutInfo').value.trim(), address = document.getElementById('address').value.trim(), ok1 = document.getElementById('agreeId').checked, ok2 = document.getElementById('agreeTerms').checked;
-      if (!fullName || !guardianName || !phone || !city || !govtId || !payoutInfo || !address) { showToast('Please fill all required fields'); return; }
-      if (!ok1 || !ok2) { showToast('Please accept both declarations'); return; }
-      const s = loadState(); const id = s.profile ? s.profile.id : 'STF-' + Date.now().toString().slice(-6);
-      s.profile = { id, fullName, guardianName, phone, city, role, govtId, regNo, payoutInfo, address, status: 'Pending Admin Approval', adminNote: '', submittedAt: new Date().toLocaleString('en-IN') };
-      saveState(s); await pushCloud(s); render(); switchTab('status', document.querySelectorAll('.tab-btn')[1]); showToast('Onboarding submitted');
+  </div>
+</footer>
+
+<script>
+/* ---------- theme (manual) — same behaviour as the customer site ---------- */
+(function(){
+  var KEY='nz-theme';
+  var mq=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
+  function stored(){ try{return localStorage.getItem(KEY)||'auto';}catch(e){return 'auto';} }
+  function apply(t){
+    var d = t==='dark' || (t!=='light' && mq && mq.matches);
+    document.documentElement.setAttribute('data-theme', d?'dark':'light');
+    var m=document.querySelector('meta[name=theme-color]'); if(m) m.setAttribute('content', d?'#081918':'#062A28');
+    var tb=document.getElementById('themeBtn');
+    if(tb){ tb.setAttribute('data-state',t); tb.setAttribute('title','Theme: '+t); tb.setAttribute('aria-label','Theme: '+t); }
+  }
+  function set(t){ try{localStorage.setItem(KEY,t);}catch(e){} apply(t); }
+  var CYCLE=['auto','light','dark'];
+  var tb=document.getElementById('themeBtn');
+  if(tb) tb.addEventListener('click',function(){ var i=CYCLE.indexOf(stored()); set(CYCLE[(i+1)%3]); });
+  if(mq && mq.addEventListener) mq.addEventListener('change',function(){ if(stored()==='auto') apply('auto'); });
+  apply(stored());
+})();
+
+(function(){
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  var hdr=document.getElementById('hdr');
+  if(hdr) addEventListener('scroll',function(){ hdr.classList.toggle('scrolled', scrollY>40); });
+
+  var WHATSAPP='919180000000';
+  var form=document.getElementById('staffForm');
+  var err=document.getElementById('err');
+  var submitBtn=document.getElementById('submitBtn');
+  function val(id){ var e=document.getElementById(id); return e? e.value.trim() : ''; }
+
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault(); err.textContent='';
+    if(val('name').length<2){ err.textContent='Please enter your name.'; return; }
+    if(val('phone').replace(/\D/g,'').length<8){ err.textContent='Please enter a valid mobile number.'; return; }
+    if(val('designation').length<2){ err.textContent='Please enter your designation exactly as you want it shown.'; return; }
+    if(val('city').length<2){ err.textContent='Please enter your city.'; return; }
+
+    var cares=[]; document.querySelectorAll('#careBox input:checked').forEach(function(c){cares.push(c.value);});
+    var payload={ name:val('name'), phone:val('phone'), designation:val('designation'),
+      qualification:val('qualification'), reg_type:val('reg_type')||'none',
+      reg_number:val('reg_number'), years:parseInt(val('years'),10)||0,
+      city:val('city'), area:val('area'), care_types:cares, notes:val('notes') };
+
+    submitBtn.disabled=true; submitBtn.textContent='Sending…';
+    fetch('https://nurzing.pages.dev/api/applications',{
+      method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify(payload)
+    }).then(function(r){ return r.json(); }).then(function(out){
+      submitBtn.disabled=false; submitBtn.innerHTML='Submit my details <span class="arrow">&rarr;</span>';
+      if(out && out.ok){ showDone(out,payload); return; }
+      err.textContent=(out && out.error)? out.error : 'Could not submit. Please try WhatsApp.';
+    }).catch(function(){
+      submitBtn.disabled=false; submitBtn.innerHTML='Submit my details <span class="arrow">&rarr;</span>';
+      err.textContent='Could not reach our server. Please message us on WhatsApp.';
+    });
+  });
+
+  function showDone(out,payload){
+    document.getElementById('formCard').classList.add('hidden');
+    document.getElementById('doneCard').classList.remove('hidden');
+    var ref=document.getElementById('refBox');
+    if(out.reference){ ref.textContent='Reference '+out.reference; } else { ref.classList.add('hidden'); }
+    if(!out.stored){
+      document.getElementById('doneTitle').textContent='Almost done.';
+      document.getElementById('doneMsg').textContent='We could not save it automatically — please send your details on WhatsApp so we do not miss you.';
     }
-    async function saveNotice() { const s = loadState(); const reason = document.getElementById('noticeReason').value.trim(); if (!reason) { showToast('Enter notice details'); return; } s.notices.unshift({ id: 'NTC-' + Date.now().toString().slice(-5), staffId: s.profile ? s.profile.id : 'UNREGISTERED', staffName: s.profile ? s.profile.fullName : 'Provider', type: document.getElementById('noticeType').value, time: document.getElementById('noticeTime').value.trim() || 'Immediate', reason, at: new Date().toLocaleString('en-IN') }); saveState(s); await pushCloud(s); document.getElementById('noticeReason').value = ''; render(); showToast('Notice recorded'); }
-    function copyPacket() { const s = loadState(); if (!s.profile) { showToast('Submit onboarding first'); return; } copyText('NURZING_STAFF_PACKET::' + JSON.stringify(s.profile)); }
-    function copyNotice() { const s = loadState(); if (!s.notices.length) { showToast('No notice yet'); return; } const n = s.notices[0]; copyText(`*NURZING Staff Alert (${n.id})*\n- Name: ${n.staffName} (${n.staffId})\n- Type: ${n.type}\n- When: ${n.time}\n- Details: ${n.reason}`); }
-    async function saveSyncConfig() { const s = loadState(); s.fbUrl = document.getElementById('fbUrl').value.trim(); saveState(s); if (s.fbUrl) await pushCloud(s); render(); showToast('Sync settings saved'); }
-    function copyJson() { copyText(JSON.stringify(loadState(), null, 2)); }
-    function resetStaffData() { localStorage.removeItem(KEY); render(); showToast('Cleared'); }
-    function fillDemo() { document.getElementById('fullName').value = 'Anjali Sharma'; document.getElementById('guardianName').value = 'Ramesh Sharma'; document.getElementById('phone').value = '9800000000'; document.getElementById('city').value = 'Banda, UP'; document.getElementById('role').value = 'Non-Clinical Attendant / Caregiver'; document.getElementById('govtId').value = 'Aadhaar XXXX-5910'; document.getElementById('regNo').value = 'Non-Clinical Attendant'; document.getElementById('payoutInfo').value = 'anjali@upi'; document.getElementById('address').value = 'Civil Lines, Banda, Uttar Pradesh'; document.getElementById('agreeId').checked = true; document.getElementById('agreeTerms').checked = true; showToast('Sample filled'); }
-    function render() {
-      const s = loadState(); document.getElementById('fbUrl').value = s.fbUrl || '';
-      if (s.fbUrl) document.getElementById('syncStatus').textContent = 'Sync: Firebase Ready';
-      const box = document.getElementById('statusCard');
-      if (!s.profile) box.innerHTML = 'No onboarding request submitted yet.';
-      else { const p = s.profile, st = (p.status || '').toLowerCase(); const cls = st.includes('approved') ? 'ok' : (st.includes('blacklist') ? 'bad' : ''); box.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;"><strong>${p.fullName} (${p.id})</strong><span class="badge-status ${cls}">${p.status}</span></div><div><strong>Role:</strong> ${p.role} / <strong>City:</strong> ${p.city}</div><div><strong>ID:</strong> ${p.govtId} / <strong>Reg:</strong> ${p.regNo}</div><div><strong>Payout:</strong> ${p.payoutInfo} / <strong>Submitted:</strong> ${p.submittedAt}</div>${p.adminNote ? `<div style="margin-top:6px;color:#0f766e;"><strong>Admin Note:</strong> ${p.adminNote}</div>` : ''}`; }
-      const nl = document.getElementById('noticeList');
-      nl.innerHTML = !s.notices.length ? '' : s.notices.map(n => `<div class="log-item"><strong>${n.type}</strong> (${n.id}) - <span>${n.time}</span><br/><span>${n.reason}</span></div>`).join('');
-    }
-    render();
-  </script>
+    var lines=['NURZING staff application'+(out.reference?' '+out.reference:''),
+      'Name: '+payload.name,'Designation: '+payload.designation,
+      'Qualification: '+(payload.qualification||'-'),
+      'Registration: '+payload.reg_type+(payload.reg_number?' '+payload.reg_number:''),
+      'Experience: '+payload.years+' yrs',
+      'City: '+payload.city+(payload.area?', '+payload.area:''),
+      'Phone: '+payload.phone];
+    document.getElementById('waBtn').href='https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(lines.join(String.fromCharCode(10)));
+  }
+})();
+</script>
 </body>
 </html>
