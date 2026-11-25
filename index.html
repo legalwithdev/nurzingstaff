@@ -169,6 +169,20 @@ html[data-theme="dark"] .refpill{background:rgba(235,214,155,.10)}
             <textarea id="notes" rows="3" placeholder="Languages, preferred shifts, areas you can travel to…"></textarea>
           </div>
 
+          <div class="field">
+            <label>What do you want from NURZING?</label>
+            <label class="optline" style="display:flex;gap:10px;align-items:flex-start;padding:10px 0;font-size:.92rem">
+              <input type="radio" name="wantVerify" value="1" checked style="margin-top:3px" />
+              <span><strong>Verify me for work.</strong> I want to take care requests through NURZING.
+              This needs an offline, in-person verification — our team will contact you.</span>
+            </label>
+            <label class="optline" style="display:flex;gap:10px;align-items:flex-start;padding:10px 0;font-size:.92rem">
+              <input type="radio" name="wantVerify" value="0" style="margin-top:3px" />
+              <span><strong>Just my digital profile for now.</strong> No verification yet. I can ask
+              for verification later, once my degree or registration is ready.</span>
+            </label>
+          </div>
+
           <button class="btn btn-gold btn-lg" type="submit" id="submitBtn" style="width:100%;justify-content:center">
             Submit my details <span class="arrow">&rarr;</span>
           </button>
@@ -396,7 +410,11 @@ html[data-theme="dark"] .refpill{background:rgba(235,214,155,.10)}
     var payload={ name:val('name'), phone:val('phone'), designation:val('designation'),
       qualification:val('qualification'), reg_type:val('reg_type')||'none',
       reg_number:val('reg_number'), years:parseInt(val('years'),10)||0,
-      city:val('city'), area:val('area'), care_types:cares, notes:val('notes') };
+      city:val('city'), area:val('area'), care_types:cares, notes:val('notes'),
+      wants_verification: (function(){
+        var r=document.querySelector('input[name="wantVerify"]:checked');
+        return r ? r.value === '1' : true;
+      })() };
 
     submitBtn.disabled=true; submitBtn.textContent='Sending…';
     fetch('https://nurzing.pages.dev/api/applications',{
