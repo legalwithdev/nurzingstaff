@@ -185,6 +185,138 @@ html[data-theme="dark"] .refpill{background:rgba(235,214,155,.10)}
         <p class="muted" id="doneMsg" style="margin-bottom:0">Our team will check your details and contact you.</p>
         <div class="refpill" id="refBox"></div>
         <div><a class="wabtn" id="waBtn" href="#" target="_blank" rel="noopener">Message us on WhatsApp</a></div>
+
+
+      <!-- ================= HOW VERIFICATION WORKS ================= -->
+      <div class="scard" id="verifyCard" style="margin-top:22px">
+        <span class="eyebrow">Verification</span>
+        <h2 style="font-family:var(--serif);font-size:1.5rem;margin:.4rem 0 .6rem">
+          How verification works
+        </h2>
+        <p class="muted" style="margin-top:0;font-size:.92rem">
+          Nothing here is a formality. A NURZING profile carries a badge only after a real,
+          in-person check — and the badge means exactly what it says.
+        </p>
+
+        <div class="snote" style="margin-bottom:16px">
+          <strong>This app never collects documents.</strong> No ID, no certificates, no police
+          clearance are uploaded or stored here. All of that is checked <strong>offline, in
+          person</strong>, by a NURZING verifier.
+        </div>
+
+        <ol style="margin:0 0 16px 1.1rem;padding:0;font-size:.9rem;line-height:1.75">
+          <li><strong>You submit this form.</strong> Only your basic details reach us — name,
+            contact, designation, qualification, experience, city and the care you provide.</li>
+          <li><strong>Our team calls you.</strong> We explain what the offline verification
+            involves and fix a time.</li>
+          <li><strong>Documents, offline.</strong> You share your nursing council registration,
+            qualification certificates and police clearance (PCC) directly with our team — never
+            through this app.</li>
+          <li><strong>Physical verification.</strong> A NURZING verifier meets you in person,
+            checks your documents against the originals and confirms your identity.</li>
+          <li><strong>Agreement.</strong> You sign the NURZING agreement covering conduct,
+            confidentiality and patient safety.</li>
+          <li><strong>Only then</strong> does your profile go live with a verified badge.</li>
+        </ol>
+
+        <div class="snote" style="margin-bottom:0">
+          <strong>Until every offline check is complete, your profile stays hidden</strong> from
+          families. We never show an unverified profile, and we never display a badge we have not
+          earned for you.
+        </div>
+      </div>
+
+      <!-- ================= MANAGE PROFILE ================= -->
+      <div class="scard" id="manageCard" style="margin-top:22px">
+        <span class="eyebrow">Already listed?</span>
+        <h2 style="font-family:var(--serif);font-size:1.5rem;margin:.4rem 0 .6rem">Manage your profile</h2>
+        <p class="muted" style="margin-top:0;font-size:.9rem">
+          Enter the mobile number and the reference you received when you submitted.
+        </p>
+
+        <div class="two">
+          <div class="field">
+            <label for="mPhone">Mobile number</label>
+            <input id="mPhone" type="tel" inputmode="tel" placeholder="+91" />
+          </div>
+          <div class="field">
+            <label for="mRef">Reference</label>
+            <input id="mRef" type="text" placeholder="NZA-XXXXXX" style="text-transform:uppercase" />
+          </div>
+        </div>
+        <button class="btn btn-ghost" type="button" id="loadBtn" style="width:100%;justify-content:center">
+          Load my profile
+        </button>
+        <p class="serr" id="mErr"></p>
+
+        <div id="mPanel" class="hidden" style="margin-top:18px">
+          <div class="snote" style="margin-bottom:16px">
+            <strong>Locked:</strong> name, designation, qualification, registration and experience.
+            These are what your verification attests to — message NURZING to change them.
+          </div>
+
+          <div class="two">
+            <div class="field">
+              <label>Name</label>
+              <input id="fName" type="text" disabled />
+            </div>
+            <div class="field">
+              <label>Designation</label>
+              <input id="fDesig" type="text" disabled />
+            </div>
+          </div>
+          <div class="two">
+            <div class="field">
+              <label>Qualification</label>
+              <input id="fQual" type="text" disabled />
+            </div>
+            <div class="field">
+              <label>Registration</label>
+              <input id="fReg" type="text" disabled />
+            </div>
+          </div>
+          <div class="two">
+            <div class="field">
+              <label>Experience</label>
+              <input id="fYears" type="text" disabled />
+            </div>
+            <div class="field">
+              <label>Status</label>
+              <input id="fStatus" type="text" disabled />
+            </div>
+          </div>
+
+          <hr style="border:0;border-top:1px solid var(--line);margin:6px 0 16px" />
+
+          <div class="two">
+            <div class="field">
+              <label for="eCity">City</label>
+              <input id="eCity" type="text" />
+            </div>
+            <div class="field">
+              <label for="eArea">Area</label>
+              <input id="eArea" type="text" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="ePhone">Mobile number</label>
+            <input id="ePhone" type="tel" inputmode="tel" />
+            <p class="muted" style="font-size:.78rem;margin:.35rem 0 0">
+              Changing this also changes the number you log in with.
+            </p>
+          </div>
+          <div class="field">
+            <label for="eNotes">Anything else</label>
+            <textarea id="eNotes" rows="3"></textarea>
+          </div>
+
+          <div class="row" style="gap:10px">
+            <button class="btn btn-gold" type="button" id="saveBtn">Save changes</button>
+            <button class="btn btn-ghost" type="button" id="withdrawBtn">Withdraw my listing</button>
+          </div>
+          <p class="serr" id="saveMsg"></p>
+        </div>
+      </div>
       </div>
     </div>
   </div>
@@ -298,6 +430,97 @@ html[data-theme="dark"] .refpill{background:rgba(235,214,155,.10)}
       'Phone: '+payload.phone];
     document.getElementById('waBtn').href='https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(lines.join(String.fromCharCode(10)));
   }
+
+  // ---------------- manage my profile ----------------
+  (function(){
+    var API = 'https://nurzing.pages.dev/api/my-profile';
+    var phoneEl = document.getElementById('mPhone');
+    var refEl = document.getElementById('mRef');
+    var errEl = document.getElementById('mErr');
+    var panel = document.getElementById('mPanel');
+    var msgEl = document.getElementById('saveMsg');
+    var cur = null;
+
+    function val(id){ var e=document.getElementById(id); return e? e.value.trim() : ''; }
+    function setVal(id,v){ var e=document.getElementById(id); if(e) e.value = v==null?'':v; }
+
+    function load(){
+      errEl.textContent = ''; msgEl.textContent = '';
+      var phone = val('mPhone'), ref = val('mRef').toUpperCase();
+      if (phone.replace(/\D/g,'').length < 8) { errEl.textContent = 'Enter your mobile number.'; return; }
+      if (!ref) { errEl.textContent = 'Enter your reference number.'; return; }
+      var btn = document.getElementById('loadBtn');
+      btn.disabled = true; btn.textContent = 'Loading…';
+      fetch(API + '?phone=' + encodeURIComponent(phone) + '&ref=' + encodeURIComponent(ref))
+        .then(function(r){ return r.json().then(function(j){ return {s:r.status, b:j}; }); })
+        .then(function(res){
+          btn.disabled = false; btn.textContent = 'Load my profile';
+          if (!res.b || !res.b.ok) { errEl.textContent = (res.b && res.b.error) || 'Could not load.'; return; }
+          cur = res.b.profile;
+          setVal('fName', cur.name); setVal('fDesig', cur.designation);
+          setVal('fQual', cur.qualification || '—');
+          setVal('fReg', (cur.reg_type || 'none') + (cur.reg_number ? ' · ' + cur.reg_number : ''));
+          setVal('fYears', (cur.years || 0) + ' years');
+          setVal('fStatus', cur.status);
+          setVal('eCity', cur.city); setVal('eArea', cur.area);
+          setVal('ePhone', cur.phone); setVal('eNotes', cur.notes);
+          panel.classList.remove('hidden');
+          if (res.b.withdrawn) {
+            msgEl.textContent = 'This listing is withdrawn. It is not shown to customers.';
+          }
+        })
+        .catch(function(){ btn.disabled = false; btn.textContent = 'Load my profile';
+          errEl.textContent = 'Could not reach the server.'; });
+    }
+
+    function save(){
+      msgEl.textContent = '';
+      if (!cur) return;
+      var body = {
+        phone: val('mPhone'), ref: val('mRef').toUpperCase(),
+        city: val('eCity'), area: val('eArea'), notes: val('eNotes')
+      };
+      var newPhone = val('ePhone').replace(/[^\d+]/g, '');
+      if (newPhone && newPhone !== cur.phone) body.new_phone = newPhone;
+      var btn = document.getElementById('saveBtn');
+      btn.disabled = true; btn.textContent = 'Saving…';
+      fetch(API, { method:'PUT', headers:{'content-type':'application/json'}, body: JSON.stringify(body) })
+        .then(function(r){ return r.json().then(function(j){ return {s:r.status, b:j}; }); })
+        .then(function(res){
+          btn.disabled = false; btn.textContent = 'Save changes';
+          if (!res.b || !res.b.ok) { msgEl.textContent = (res.b && res.b.error) || 'Could not save.'; return; }
+          msgEl.textContent = 'Saved.';
+          if (res.b.phone_changed) {
+            setVal('mPhone', res.b.profile.phone);
+            msgEl.textContent = 'Saved. Use your new number next time you log in.';
+          }
+          cur = res.b.profile;
+        })
+        .catch(function(){ btn.disabled = false; btn.textContent = 'Save changes';
+          msgEl.textContent = 'Could not reach the server.'; });
+    }
+
+    function withdraw(){
+      if (!cur) return;
+      if (!confirm('Withdraw your listing? Customers will no longer see you.')) return;
+      var btn = document.getElementById('withdrawBtn');
+      btn.disabled = true;
+      fetch(API, { method:'DELETE', headers:{'content-type':'application/json'},
+        body: JSON.stringify({ phone: val('mPhone'), ref: val('mRef').toUpperCase() }) })
+        .then(function(r){ return r.json().then(function(j){ return {s:r.status, b:j}; }); })
+        .then(function(res){
+          btn.disabled = false;
+          if (!res.b || !res.b.ok) { msgEl.textContent = (res.b && res.b.error) || 'Could not withdraw.'; return; }
+          setVal('fStatus', 'withdrawn');
+          msgEl.textContent = 'Your listing has been withdrawn.';
+        })
+        .catch(function(){ btn.disabled = false; msgEl.textContent = 'Could not reach the server.'; });
+    }
+
+    document.getElementById('loadBtn').addEventListener('click', load);
+    document.getElementById('saveBtn').addEventListener('click', save);
+    document.getElementById('withdrawBtn').addEventListener('click', withdraw);
+  })();
 })();
 </script>
 </body>
